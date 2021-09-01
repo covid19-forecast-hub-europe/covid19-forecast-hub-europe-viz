@@ -136,5 +136,8 @@
       }
     }
   },
-  "defaultProject": "covid-forecast-ecdc"
+  "defaultProject": "covid-forecast-ecdc",
+  "cli": {
+    "analytics": false
+  }
 }

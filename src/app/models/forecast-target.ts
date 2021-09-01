@@ -1,4 +1,5 @@
 export enum ForecastTarget {
   Cases = 'cases',
-  Death = 'death'
+  Death = 'death',
+  Hospitalisation = 'hosp'
 }

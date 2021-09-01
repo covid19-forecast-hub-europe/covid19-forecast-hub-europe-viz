@@ -31,7 +31,8 @@ export class TruthDataService {
         return _.fromPairs(_.map(_.groupBy(parseResult.data, x => x.location), (locGroup, locKey) => {
           return [locKey, {
             'cases': locGroup.map(x => ({ date: new Date(x.date), value: parseInt(x.inc_case) })),
-            'death': locGroup.map(x => ({ date: new Date(x.date), value: parseInt(x.inc_death) }))
+            'death': locGroup.map(x => ({ date: new Date(x.date), value: parseInt(x.inc_death) })),
+            // Todo: add 'hosp' mapping for truthData here
           }]
         }));
       }))
