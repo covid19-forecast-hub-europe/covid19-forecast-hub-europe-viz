@@ -24,7 +24,7 @@ Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protrac
 
 ## Deploy
 
-Run `npm run deploy` (or `ng deploy --base-href=/forecast-europe/` to automatically build the app and push the output to the `gh-pages` branch.
+Run `npm run deploy` to automatically build the app and push the output to the `gh-pages` branch.
 
 ## Further help
 
