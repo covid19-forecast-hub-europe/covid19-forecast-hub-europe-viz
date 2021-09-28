@@ -1,6 +1,6 @@
 export const environment = {
   production: true,
-  base_href: '/forecast-europe',
+  base_href: '/covid19-forecast-hub-europe-viz/',
   urls: {
     defaultSettings: {
       modelNames: 'https://media.githubusercontent.com/media/epiforecasts/covid19-forecast-hub-europe/main/viz/settings_model_selection.json'
