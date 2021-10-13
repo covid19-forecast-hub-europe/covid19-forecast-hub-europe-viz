@@ -113,7 +113,7 @@ export class ForecastRebuildComponent implements OnInit {
           truthData: truthData.truthData,
           filter: truthData.filter,
           availableDates: forecastModelsDataView.availableDates
-        } as ChartDataView;
+        };
       }))
       .pipe(shareReplay(1));
 
@@ -140,6 +140,14 @@ export class ForecastRebuildComponent implements OnInit {
 
   changeConfidenceInterval(ci: QuantileType | undefined) {
     this.displaySettings.changeConfidenceInterval(ci);
+  }
+
+  changeYScale(value: 'linear' | 'log') {
+    this.displaySettings.changeYScale(value);
+  }
+
+  changeYValue(value: 'count' | 'incidence') {
+    this.displaySettings.changeYValue(value);
   }
 
   changeDisplayMode(type: 'ForecastByDateDisplayMode' | 'ForecastByHorizonDisplayMode') {

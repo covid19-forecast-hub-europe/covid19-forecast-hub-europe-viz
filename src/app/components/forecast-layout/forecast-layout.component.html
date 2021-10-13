@@ -30,6 +30,7 @@
 
           <ng-template [cdkPortalOutlet]="predictionIntervalPortal$ | async"></ng-template>
 
+          <ng-template [cdkPortalOutlet]="yAxisPortal$ | async"></ng-template>
 
           <ng-template [cdkPortalOutlet]="displayModePortal$ | async"></ng-template>
 
@@ -100,16 +101,21 @@
     <div class="main-content" [class.quick-access-open]="!startSideNavOpened">
       <div class="header-container">
         <ng-template [cdkPortalOutlet]="headerPortal$ | async"></ng-template>
-        <button mat-icon-button *ngIf="isSmallWidth$ | async" class="display-setting-toggle" (click)="isSmallDisplaySettingsOpened = !isSmallDisplaySettingsOpened"><mat-icon>settings</mat-icon></button>
+        <button mat-icon-button *ngIf="isSmallWidth$ | async" class="display-setting-toggle"
+          (click)="isSmallDisplaySettingsOpened = !isSmallDisplaySettingsOpened">
+          <mat-icon>settings</mat-icon>
+        </button>
       </div>
 
       <div class="display-settings-container" *ngIf="isSmallWidth$ | async" [class.open]="isSmallDisplaySettingsOpened">
-        <div>
+        <div class="display-setting-left-col-container">
           <ng-template [cdkPortalOutlet]="predictionIntervalPortal$ | async"></ng-template>
+          <ng-template [cdkPortalOutlet]="yAxisPortal$ | async"></ng-template>
         </div>
         <div>
           <ng-template [cdkPortalOutlet]="displayModePortal$ | async"></ng-template>
         </div>
+        <hr/>
       </div>
 
       <div class="chart-container">

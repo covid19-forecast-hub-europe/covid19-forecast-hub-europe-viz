@@ -10,7 +10,7 @@ export class ForecastLayoutItemComponent implements OnInit {
 
   @ViewChild(TemplateRef, {static: true}) _implicitContent: TemplateRef<any> | null = null;
 
-  @Input() position: 'target' | 'location' | 'predictionInterval' | 'displayMode' | 'chart' | 'legend' | 'quickAccess' | 'header' = 'target';
+  @Input() position: 'target' | 'location' | 'predictionInterval' | 'displayMode' | 'chart' | 'legend' | 'quickAccess' | 'header' | 'yAxis' = 'target';
 
   private _contentPortal: TemplatePortal | null = null;
 

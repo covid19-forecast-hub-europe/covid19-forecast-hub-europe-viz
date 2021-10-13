@@ -2,6 +2,10 @@
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 11.0.2.
 
+## Improvements
+- When YScale = 'log' values <= 0 breaks the chart (log(0), log(-n)). Workaround => if value <= 0 is present, then min of axis = 0.01;
+    - Check for new echart versions which adresses this issue => update echarts package (ngx-echarts if neccessary) 
+
 ## Development server
 
 Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.

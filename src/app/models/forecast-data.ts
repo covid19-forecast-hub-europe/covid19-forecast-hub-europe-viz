@@ -89,6 +89,8 @@ export class ForecastDisplaySettings {
   private defaultDateDisplayMode$ = this.availableDates$.pipe(map(dates => ({ $type: 'ForecastByDateDisplayMode', forecastDate: _.first(dates) || new Date(), weeksShown: 2 } as ForecastDisplayMode)))
   dateDisplayMode$ = combineLatest([this.userDateDisplayMode$, this.defaultDateDisplayMode$]).pipe(map(([u, d]) => u ? u : d));
   horizonDisplayMode$ = new BehaviorSubject<ForecastByHorizonDisplayMode>({ $type: 'ForecastByHorizonDisplayMode', weeksAhead: 1 });
+  yScale$ = new BehaviorSubject<'linear' | 'log'>('linear');
+  yValue$ = new BehaviorSubject<'count' | 'incidence'>('count');
 
   displayMode$ = combineLatest([this.selectedDisplayMode$, this.dateDisplayMode$, this.horizonDisplayMode$]).pipe(map(([mode, date, horizon]) => {
     return mode === 'horizon' ? horizon : date;
@@ -101,13 +103,19 @@ export class ForecastDisplaySettings {
   changeHorizonDisplayMode(value: ForecastByHorizonDisplayMode) {
     this.horizonDisplayMode$.next(value);
   }
-
+  changeYScale(value: 'linear' | 'log') {
+    this.yScale$.next(value);
+  }
+  changeYValue(value: 'count' | 'incidence') {
+    this.yValue$.next(value);
+  }
 
   // get displayMode(): ForecastDisplayMode | undefined { return this.userDisplayMode$.getValue(); }
 
-  settings$ = combineLatest([this.confidenceInterval$, this.displayMode$]).pipe(map(([ci, dm]) => {
-    return { confidenceInterval: ci, displayMode: dm };
-  }))
+  settings$: Observable<DisplaySettings> = combineLatest([this.confidenceInterval$, this.displayMode$, this.yScale$, this.yValue$])
+    .pipe(map(([ci, dm, ys, yv]) => {
+      return { confidenceInterval: ci, displayMode: dm, yScale: ys, yValue: yv };
+    }));
 
   constructor(private availableDates$: Observable<Date[]>) {
 
@@ -130,8 +138,15 @@ export interface ForecastByHorizonDisplayMode {
 
 export type ForecastDisplayMode = ForecastByDateDisplayMode | ForecastByHorizonDisplayMode;
 
+interface DisplaySettings {
+  confidenceInterval: QuantileType | undefined;
+  displayMode: ForecastDisplayMode;
+  yScale: 'linear' | 'log';
+  yValue: 'count' | 'incidence';
+}
+
 export interface ChartDataView {
-  displaySettings: { confidenceInterval: QuantileType | undefined, displayMode: ForecastDisplayMode },
+  displaySettings: DisplaySettings,
   filter: { target: ForecastTarget, location: LocationLookupItem },
   forecasts: ForecastModelData[],
   truthData: TruthData[],

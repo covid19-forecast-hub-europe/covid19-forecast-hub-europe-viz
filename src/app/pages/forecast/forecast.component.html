@@ -16,7 +16,8 @@
             (click)="changeTarget(ForecastTargetEnum.Death)">{{ForecastTargetEnum.Death | targetLabel}}</button>
           <button mat-raised-button class="target-button"
             [color]="dataView.filter.target === ForecastTargetEnum.Hospitalisation ? 'primary' : 'basic'"
-            (click)="changeTarget(ForecastTargetEnum.Hospitalisation)">{{ForecastTargetEnum.Hospitalisation | targetLabel}}</button>
+            (click)="changeTarget(ForecastTargetEnum.Hospitalisation)">{{ForecastTargetEnum.Hospitalisation |
+            targetLabel}}</button>
 
         </div>
       </mat-card-content>
@@ -70,6 +71,50 @@
             [color]="dataView.displaySettings.confidenceInterval === QuantileTypeEnum.Q95 ? 'primary' : 'basic'"
             (click)="changeConfidenceInterval(QuantileTypeEnum.Q95)">95%</button>
         </div>
+      </mat-card-content>
+    </mat-card>
+  </app-forecast-layout-item>
+
+  <app-forecast-layout-item position="yAxis">
+    <mat-card class="settings-card">
+      <mat-card-title-group>
+        <mat-card-title>Y-Axis</mat-card-title>
+        <mat-card-subtitle><span class="todo">Switch Y-Axis scaling and displayed valued to suit ure needs.</span>
+        </mat-card-subtitle>
+      </mat-card-title-group>
+      <mat-card-content>
+        <table class="table-yaxis">
+          <tr>
+            <td class="col-label">Scaling</td>
+            <td class="col-button"><button mat-raised-button class="yscale-button"
+              [color]="dataView.displaySettings.yScale === 'linear' ? 'primary' : 'basic'"
+              (click)="changeYScale('linear')">Linear</button></td>
+            <td class="col-button"><button mat-raised-button class="yscale-button"
+              [color]="dataView.displaySettings.yScale === 'log' ? 'primary' : 'basic'"
+              (click)="changeYScale('log')">Log</button></td>
+          </tr>
+          <tr>
+            <td class="col-label">Value</td>
+            <td class="col-button"><button mat-raised-button class="yvalue-button"
+              [color]="dataView.displaySettings.yValue === 'count' ? 'primary' : 'basic'"
+              (click)="changeYValue('count')">Count</button></td>
+            <td class="col-button"><button mat-raised-button class="yvalue-button"
+              [color]="dataView.displaySettings.yValue === 'incidence' ? 'primary' : 'basic'"
+              (click)="changeYValue('incidence')">Incidence</button></td>
+          </tr>
+        </table>
+        <!-- <div class="yaxis-card-container">
+          <div class="yscale-card-container">
+            <mat-label>Scaling</mat-label>
+            
+            
+          </div>
+          <div class="yvalue-card-container">
+            <mat-label>Value</mat-label>
+            
+            
+          </div>
+        </div> -->
       </mat-card-content>
     </mat-card>
   </app-forecast-layout-item>

@@ -9,6 +9,8 @@
     flex: 1;
     height: 100px;
     font-size: 150%;
+    padding-left: 8px;
+    padding-right: 8px;
   }
 }
 
@@ -36,6 +38,61 @@
 
   .ci-button {
     flex: 1;
+  }
+}
+
+// .yaxis-card-container {
+//   display: flex;
+//   flex-direction: column;
+//   gap: 15px;
+
+//   .yscale-card-container {
+//     display: flex;
+//     flex-direction: row;
+//     gap: 10px;
+//     align-items: center;
+
+//     .yscale-button {
+//       flex: 1;
+//     }
+//   }
+
+//   .yvalue-card-container {
+//     display: flex;
+//     flex-direction: row;
+//     gap: 10px;
+//     align-items: center;
+
+//     .yvalue-button {
+//       flex: 1;
+//     }
+//   }
+// }
+
+.table-yaxis {
+  // & > tr {
+  //   &:first-child {
+  //     .col-button {
+  //       padding-top: 0;
+  //     }
+  //   }
+  //   &:last-child {
+  //     .col-button {
+  //       padding-bottom: 0;
+  //     }
+  //   }
+  // }
+  .col-label {
+    width: 1%;
+    font-weight: 500;
+  }
+  .col-button {
+    width: 50%;
+    padding: 5px;
+
+    & > * {
+      width: 100%;
+    }
   }
 }
 
@@ -148,7 +205,7 @@
   .mat-toolbar {
     overflow: hidden;
 
-    .header-text{
+    .header-text {
       max-width: calc(100% - 40px);
       overflow: hidden;
       text-overflow: ellipsis;
@@ -263,7 +320,6 @@ mat-toolbar.settings-header {
 
   .mat-card-content {
     height: calc(100% - 84px);
-    min-height: 550px;
+    min-height: 545px;
   }
 }
-
