@@ -8,7 +8,7 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "deploy": "ng deploy --base-href=/forecast-europe/"
+    "deploy": "ng deploy --base-href=/covid19-forecast-hub-europe-viz/"
   },
   "private": true,
   "dependencies": {

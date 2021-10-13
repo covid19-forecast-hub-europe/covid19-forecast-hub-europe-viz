@@ -12,7 +12,7 @@ export class TargetLabelPipe implements PipeTransform {
         return 'Cases'
       case ForecastTarget.Death:
         return 'Deaths';
-        case ForecastTarget.Hospitalisation:
+      case ForecastTarget.Hospitalisation:
         return 'Hospital';
       default:
         return 'Unknown Target';
