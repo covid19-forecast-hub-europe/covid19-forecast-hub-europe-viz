@@ -14,6 +14,10 @@
           <button mat-raised-button class="target-button"
             [color]="dataView.filter.target === ForecastTargetEnum.Death ? 'primary' : 'basic'"
             (click)="changeTarget(ForecastTargetEnum.Death)">{{ForecastTargetEnum.Death | targetLabel}}</button>
+          <button mat-raised-button class="target-button"
+            [color]="dataView.filter.target === ForecastTargetEnum.Hospitalisation ? 'primary' : 'basic'"
+            (click)="changeTarget(ForecastTargetEnum.Hospitalisation)">{{ForecastTargetEnum.Hospitalisation | targetLabel}}</button>
+
         </div>
       </mat-card-content>
     </mat-card>
@@ -194,6 +198,9 @@
     <button mat-mini-fab title="Deaths" class="access-button mat-elevation-z3"
       [color]="dataView.filter.target === ForecastTargetEnum.Death ? 'primary' : 'basic'"
       (click)="changeTarget(ForecastTargetEnum.Death)">D</button>
+    <button mat-mini-fab title="Hospitalisations" class="access-button mat-elevation-z3"
+      [color]="dataView.filter.target === ForecastTargetEnum.Hospitalisation ? 'primary' : 'basic'"
+      (click)="changeTarget(ForecastTargetEnum.Hospitalisation)">H</button>
 
     <mat-icon class="access-title-icon">location_on</mat-icon>
     <button mat-icon-button (mousedown)="scrollUp()" [disabled]="locationScroller.top === 0" class="scroll-button">

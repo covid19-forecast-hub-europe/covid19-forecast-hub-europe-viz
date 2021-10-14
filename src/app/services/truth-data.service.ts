@@ -13,6 +13,7 @@ interface RawTruthToPlot {
   location: string;
   inc_case: string;
   inc_death: string;
+  inc_hosp: string;
 }
 
 @Injectable({
@@ -31,7 +32,8 @@ export class TruthDataService {
         return _.fromPairs(_.map(_.groupBy(parseResult.data, x => x.location), (locGroup, locKey) => {
           return [locKey, {
             'cases': locGroup.map(x => ({ date: new Date(x.date), value: parseInt(x.inc_case) })),
-            'death': locGroup.map(x => ({ date: new Date(x.date), value: parseInt(x.inc_death) }))
+            'death': locGroup.map(x => ({ date: new Date(x.date), value: parseInt(x.inc_death) })),
+            'hosp': locGroup.map(x => ({ date: new Date(x.date), value: parseInt(x.inc_hosp) }))
           }]
         }));
       }))
