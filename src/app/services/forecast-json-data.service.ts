@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { combineLatest, Observable, of } from 'rxjs';
-import { ForecastData, ForecastDataFilter, ForecastType, QuantilePointType, QuantileType } from '../models/forecast-data';
+import { ForecastData, ForecastType, QuantilePointType, QuantileType } from '../models/forecast-data';
 import { environment } from '../../environments/environment';
 import { map, shareReplay } from 'rxjs/operators';
 import * as _ from 'lodash-es';
@@ -45,8 +45,8 @@ export class ForecastJsonDataService extends ForecastDataSerivce {
       .pipe(shareReplay(1));
   }
 
-  createForecastDataObservable(filter: ForecastDataFilter): Observable<{ availableForecastDates: Date[], data: ForecastData[], filter: { target: ForecastTarget, location: LocationLookupItem } }> {
-    return combineLatest([this.rawForecastData$, filter.filter$])
+  createForecastDataObservable(filter$: Observable<{ target: ForecastTarget; location: LocationLookupItem; }>): Observable<{ availableForecastDates: Date[], data: ForecastData[], filter: { target: ForecastTarget, location: LocationLookupItem } }> {
+    return combineLatest([this.rawForecastData$, filter$])
       .pipe(map(([rawData, f]) => {
         const locationEntry = rawData[f.location.id];
 

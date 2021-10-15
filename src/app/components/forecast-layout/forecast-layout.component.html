@@ -1,4 +1,4 @@
-<mat-sidenav-container class="site-container">
+<mat-sidenav-container class="site-container" autosize>
   <mat-sidenav [(opened)]="startSideNavOpened" [mode]="(isDesktopWidth$ | async) ? 'side' : 'over'"
     (closedStart)="closeStartSideNav()" (openedStart)="openStartSideNav()">
     <div class="sidenav-start-container">
@@ -65,16 +65,17 @@
     </div>
   </mat-sidenav>
 
-  <div class="main-content-container">
-    <div class="sidenav-start-access" [ngClass]="{'hidden': startSideNavOpened}">
-      <div class="sidenav-start-access-container">
-        <button mat-icon-button class="access-button" (click)="openStartSideNav()">
-          <mat-icon>arrow_right</mat-icon>
-        </button>
+  <mat-sidenav-content>
+    <div class="main-content-container">
+      <div class="sidenav-start-access" [ngClass]="{'hidden': startSideNavOpened}">
+        <div class="sidenav-start-access-container">
+          <button mat-icon-button class="access-button" (click)="openStartSideNav()">
+            <mat-icon>arrow_right</mat-icon>
+          </button>
 
-        <ng-template [cdkPortalOutlet]="quickAccessPortal$ | async"></ng-template>
+          <ng-template [cdkPortalOutlet]="quickAccessPortal$ | async"></ng-template>
 
-        <!-- <mat-icon class="access-title-icon">adjust</mat-icon>
+          <!-- <mat-icon class="access-title-icon">adjust</mat-icon>
         <button mat-mini-fab title="Cases" class="access-button mat-elevation-z3"
           [color]="dataView.filter.target === ForecastTargetEnum.Cases ? 'primary' : 'basic'"
           (click)="changeTarget(ForecastTargetEnum.Cases)">C</button>
@@ -95,36 +96,38 @@
           [disabled]="locationScroller.top === locationScroller.topMax">
           <mat-icon>arrow_drop_down</mat-icon>
         </button> -->
+        </div>
+      </div>
+
+      <div class="main-content" [class.quick-access-open]="!startSideNavOpened">
+        <div class="header-container">
+          <ng-template [cdkPortalOutlet]="headerPortal$ | async"></ng-template>
+          <button mat-icon-button *ngIf="isSmallWidth$ | async" class="display-setting-toggle"
+            (click)="isSmallDisplaySettingsOpened = !isSmallDisplaySettingsOpened">
+            <mat-icon>settings</mat-icon>
+          </button>
+        </div>
+
+        <div class="display-settings-container" *ngIf="isSmallWidth$ | async"
+          [class.open]="isSmallDisplaySettingsOpened">
+          <div class="display-setting-left-col-container">
+            <ng-template [cdkPortalOutlet]="predictionIntervalPortal$ | async"></ng-template>
+            <ng-template [cdkPortalOutlet]="yAxisPortal$ | async"></ng-template>
+          </div>
+          <div>
+            <ng-template [cdkPortalOutlet]="displayModePortal$ | async"></ng-template>
+          </div>
+          <hr />
+        </div>
+
+        <div class="chart-container">
+          <ng-template [cdkPortalOutlet]="chartPortal$ | async"></ng-template>
+        </div>
+
+        <div class="legend-container" *ngIf="isSmallWidth$ | async">
+          <ng-template [cdkPortalOutlet]="legendPortal$ | async"></ng-template>
+        </div>
       </div>
     </div>
-
-    <div class="main-content" [class.quick-access-open]="!startSideNavOpened">
-      <div class="header-container">
-        <ng-template [cdkPortalOutlet]="headerPortal$ | async"></ng-template>
-        <button mat-icon-button *ngIf="isSmallWidth$ | async" class="display-setting-toggle"
-          (click)="isSmallDisplaySettingsOpened = !isSmallDisplaySettingsOpened">
-          <mat-icon>settings</mat-icon>
-        </button>
-      </div>
-
-      <div class="display-settings-container" *ngIf="isSmallWidth$ | async" [class.open]="isSmallDisplaySettingsOpened">
-        <div class="display-setting-left-col-container">
-          <ng-template [cdkPortalOutlet]="predictionIntervalPortal$ | async"></ng-template>
-          <ng-template [cdkPortalOutlet]="yAxisPortal$ | async"></ng-template>
-        </div>
-        <div>
-          <ng-template [cdkPortalOutlet]="displayModePortal$ | async"></ng-template>
-        </div>
-        <hr/>
-      </div>
-
-      <div class="chart-container">
-        <ng-template [cdkPortalOutlet]="chartPortal$ | async"></ng-template>
-      </div>
-
-      <div class="legend-container" *ngIf="isSmallWidth$ | async">
-        <ng-template [cdkPortalOutlet]="legendPortal$ | async"></ng-template>
-      </div>
-    </div>
-  </div>
+  </mat-sidenav-content>
 </mat-sidenav-container>

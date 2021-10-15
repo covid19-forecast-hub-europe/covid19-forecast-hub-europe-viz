@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { map, shareReplay } from 'rxjs/operators';
 import * as Papa from 'papaparse';
 import * as _ from 'lodash';
-import { ForecastData, ForecastDataFilter, ForecastTargetDescription, ForecastType, QuantilePointType, QuantileType } from '../models/forecast-data';
+import { ForecastData, ForecastTargetDescription, ForecastType, QuantilePointType, QuantileType } from '../models/forecast-data';
 import { ForecastTarget } from '../models/forecast-target';
 import { combineLatest, Observable, of } from 'rxjs';
 import { LocationLookupItem } from '../models/location-lookup';
@@ -56,8 +56,8 @@ export class ForecastCsvDataService extends ForecastDataSerivce {
       .pipe(shareReplay(1));
   }
 
-  createForecastDataObservable(filter: ForecastDataFilter): Observable<{ availableForecastDates: Date[], data: ForecastData[], filter: { target: ForecastTarget, location: LocationLookupItem } }> {
-    return combineLatest([this.forecastData$, filter.filter$]).pipe(map(([rawData, f]) => {
+  createForecastDataObservable(filter$: Observable<{ target: ForecastTarget; location: LocationLookupItem; }>): Observable<{ availableForecastDates: Date[], data: ForecastData[], filter: { target: ForecastTarget, location: LocationLookupItem } }> {
+    return combineLatest([this.forecastData$, filter$]).pipe(map(([rawData, f]) => {
       return { ...rawData[f.location.id][f.target], filter: { location: f.location, target: f.target } };
     }));
   }

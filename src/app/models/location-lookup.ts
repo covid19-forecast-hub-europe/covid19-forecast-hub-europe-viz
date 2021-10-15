@@ -7,6 +7,7 @@ export interface LocationLookupItem {
 }
 
 export class LocationLookup {
+  
   items: LocationLookupItem[];
 
   constructor(items: LocationLookupItem[]) {
@@ -15,5 +16,9 @@ export class LocationLookup {
 
   get(id: string) {
     return _.find(this.items, { id });
+  }
+
+  has(id: string) {
+    return _.some(this.items, x => x.id === id);
   }
 }

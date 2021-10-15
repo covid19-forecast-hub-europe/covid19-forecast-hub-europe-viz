@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { ECharts, EChartsOption, SeriesOption, TooltipComponentOption } from 'echarts';
-import { ChartDataView, ForecastByDateDisplayMode, ForecastByHorizonDisplayMode, ForecastData, ForecastDataFilter, ForecastDisplayMode, ForecastDisplaySettings, ForecastModelData, ForecastType, QuantilePointType, QuantileType } from 'src/app/models/forecast-data';
+import { ChartDataView, ForecastByDateDisplayMode, ForecastByHorizonDisplayMode, ForecastData, ForecastModelData, ForecastType, QuantilePointType, QuantileType } from 'src/app/models/forecast-data';
 import { TruthData } from 'src/app/models/truth-data';
 import * as _ from 'lodash-es';
 import { addDays, addMinutes } from 'date-fns';
@@ -119,6 +119,8 @@ export class ForecastChartComponent implements OnInit, OnChanges {
   }
 
   private updateChartOption() {
+    console.log("Updating chart with", this.dataView);
+    
     const newSeries: SeriesOption[] = [];
     const newChartOption = { ...this.defaultChartOption, series: newSeries };
 

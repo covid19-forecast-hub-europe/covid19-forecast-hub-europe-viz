@@ -145,7 +145,7 @@
                     <div class="mat-select-wrapper">
                       <mat-select [value]="$any(dataView.displaySettings.displayMode).forecastDate"
                         [compareWith]="compareDates"
-                        (selectionChange)="changeForecastDate($event.value, dataView.availableDates, dataView.displaySettings.displayMode)">
+                        (selectionChange)="changeForecastDate($event.value, dataView.availableDates)">
                         <mat-option *ngFor="let date of dataView.availableDates" [value]="date">
                           {{date | dateToPrevSaturday | date}}
                         </mat-option>
@@ -169,7 +169,7 @@
                 </div>
                 <div class="input-control">
                   <mat-button-toggle-group [ngModel]="$any(dataView.displaySettings.displayMode).weeksShown"
-                    (ngModelChange)="changeDateWeeksShown($event, dataView.displaySettings.displayMode)">
+                    (ngModelChange)="changeDateWeeksShown($event)">
                     <mat-button-toggle *ngFor="let week of [1,2,3,4]" [value]="week">
                       {{week}} {{week === 1 ? 'Week' : 'Weeks'}}
                     </mat-button-toggle>
@@ -185,7 +185,7 @@
                 <div class="label">Weeks ahead</div>
                 <div class="input-control">
                   <mat-button-toggle-group [ngModel]="$any(dataView.displaySettings.displayMode).weeksAhead"
-                    (ngModelChange)="changeHorizonWeeksAhead($event, dataView.displaySettings.displayMode)">
+                    (ngModelChange)="changeHorizonWeeksAhead($event)">
                     <mat-button-toggle *ngFor="let week of [1,2,3,4]" [value]="week">
                       {{week}} {{week === 1 ? 'Week' : 'Weeks'}}
                     </mat-button-toggle>
@@ -213,8 +213,8 @@
   </app-forecast-layout-item>
 
   <app-forecast-layout-item position="chart">
-    <app-forecast-chart #chart [dataView]="dataView" [visibleModels]="visibleModels$ | async"
-      (onForecastDateChanged)="changeForecastDate($event, dataView.availableDates, dataView.displaySettings.displayMode)">
+    <app-forecast-chart #chart [dataView]="dataView" [visibleModels]="visibleModelsValue.value$ | async"
+      (onForecastDateChanged)="changeForecastDate($event, dataView.availableDates)">
     </app-forecast-chart>
   </app-forecast-layout-item>
 
@@ -229,7 +229,7 @@
         (click)="changeVisibleModels(allModelNames)">All</button>
     </mat-toolbar>
     <mat-card class="model-legend-card">
-      <app-legend [models]="dataView.forecasts" [visibleModels]="visibleModels$ | async"
+      <app-legend [models]="dataView.forecasts" [visibleModels]="visibleModelsValue.value$ | async"
         (visibleModelsChanged)="changeVisibleModels($event)" (highlightModel)="chart.highlight($event)"
         (stopHighlightModel)="chart.stopHighlight()"></app-legend>
     </mat-card>
