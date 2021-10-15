@@ -59,13 +59,13 @@ export interface ForecastModelData {
 
 export class UserDefaultValue<T> {
   private userValue$ = new BehaviorSubject<T | null>(null);
-  value$ = combineLatest([this.userValue$.pipe(tap(x => console.log("User emited", x))), this.defaultValue$.pipe(tap(x => console.log("Default emited", x)))])
+  value$ = combineLatest([this.userValue$, this.defaultValue$])
     .pipe(map(([u, d]) => u !== null ? u : d))
     .pipe(distinctUntilChanged((prev, curr) => {
       if(this.dateGuard(prev) && this.dateGuard(curr)) return DateHelper.sameDate(prev, curr);
       return prev === curr;
     }))
-    .pipe(tap(x => console.log("combined used and default", x)))
+    // .pipe(tap(x => console.log("combined used and default", x)))
     .pipe(shareReplay(1));
 
   constructor(private defaultValue$: Observable<T>, private userValueChanged?: (x: T | null) => void) {

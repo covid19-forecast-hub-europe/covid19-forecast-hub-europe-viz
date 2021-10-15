@@ -119,7 +119,7 @@ export class ForecastChartComponent implements OnInit, OnChanges {
   }
 
   private updateChartOption() {
-    console.log("Updating chart with", this.dataView);
+    // console.log("Updating chart with", this.dataView);
     
     const newSeries: SeriesOption[] = [];
     const newChartOption = { ...this.defaultChartOption, series: newSeries };
@@ -303,7 +303,7 @@ export class ForecastChartComponent implements OnInit, OnChanges {
 
   private createForecastHorizonTooltipFormatter(): any {
     return (params: any | Array<any>) => {
-      console.log("TT for", params);
+      // console.log("TT for", params);
       const paramsArray = Array.isArray(params) ? params : [params];
       if (paramsArray.every(x => x.seriesId.endsWith('-ci'))) return '';
 

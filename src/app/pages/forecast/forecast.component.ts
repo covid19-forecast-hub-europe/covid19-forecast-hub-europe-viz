@@ -333,7 +333,7 @@ export class ForecastRebuildComponent implements OnInit {
     }));
 
     const dataViewPipeline = new DataViewPipeline(dataPipeline.truthDataSet$, dataPipeline.forecastDataSet$, displaySettings$);
-    this.dataView$ = dataViewPipeline.dataView$.pipe(delay(1000000));
+    this.dataView$ = dataViewPipeline.dataView$;
     this.allModelNames$ = dataViewPipeline.allModelNames$;
 
     const defaultVisibleModels$ = combineLatest([route.queryParamMap.pipe(distinctUntilChanged((prev, curr) => !curr.has(UrlParamNames.VisibleModels))), this.defaultSettingService.defaultModelNames$, dataViewPipeline.allModelNames$])
