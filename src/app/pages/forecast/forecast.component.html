@@ -1,4 +1,4 @@
-<app-forecast-layout *ngIf="dataView$ | async as dataView">
+<app-forecast-layout *ngIf="dataView$ | async as dataView else loading">
   <app-forecast-layout-item position="target">
     <mat-card class="target-card settings-card">
       <mat-card-title-group>
@@ -87,20 +87,20 @@
           <tr>
             <td class="col-label">Scaling</td>
             <td class="col-button"><button mat-raised-button class="yscale-button"
-              [color]="dataView.displaySettings.yScale === 'linear' ? 'primary' : 'basic'"
-              (click)="changeYScale('linear')">Linear</button></td>
+                [color]="dataView.displaySettings.yScale === 'linear' ? 'primary' : 'basic'"
+                (click)="changeYScale('linear')">Linear</button></td>
             <td class="col-button"><button mat-raised-button class="yscale-button"
-              [color]="dataView.displaySettings.yScale === 'log' ? 'primary' : 'basic'"
-              (click)="changeYScale('log')">Log</button></td>
+                [color]="dataView.displaySettings.yScale === 'log' ? 'primary' : 'basic'"
+                (click)="changeYScale('log')">Log</button></td>
           </tr>
           <tr>
             <td class="col-label">Value</td>
             <td class="col-button"><button mat-raised-button class="yvalue-button"
-              [color]="dataView.displaySettings.yValue === 'count' ? 'primary' : 'basic'"
-              (click)="changeYValue('count')">Count</button></td>
+                [color]="dataView.displaySettings.yValue === 'count' ? 'primary' : 'basic'"
+                (click)="changeYValue('count')">Count</button></td>
             <td class="col-button"><button mat-raised-button class="yvalue-button"
-              [color]="dataView.displaySettings.yValue === 'incidence' ? 'primary' : 'basic'"
-              (click)="changeYValue('incidence')">Incidence</button></td>
+                [color]="dataView.displaySettings.yValue === 'incidence' ? 'primary' : 'basic'"
+                (click)="changeYValue('incidence')">Incidence</button></td>
           </tr>
         </table>
         <!-- <div class="yaxis-card-container">
@@ -262,3 +262,7 @@
     </button>
   </app-forecast-layout-item>
 </app-forecast-layout>
+
+<ng-template #loading>
+  <app-loading-spinner></app-loading-spinner>
+</ng-template>

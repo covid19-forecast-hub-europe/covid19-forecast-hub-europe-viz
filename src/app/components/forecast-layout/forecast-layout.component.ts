@@ -107,7 +107,7 @@ export class ForecastLayoutComponent implements OnInit, AfterViewInit, OnDestroy
           portalsByPosition.get(p.position)!.next(p.content);
         }
       });
-      this.forceResize();
+      // this.forceResize();
     });
   }
 
@@ -120,7 +120,7 @@ export class ForecastLayoutComponent implements OnInit, AfterViewInit, OnDestroy
   }
 
   forceResize() {
-    window.dispatchEvent(new Event('resize'));
+    // window.dispatchEvent(new Event('resize'));
   }
 
 }

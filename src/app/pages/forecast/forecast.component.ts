@@ -5,7 +5,7 @@ import { differenceInDays, formatISO, isEqual, isValid, parseISO } from 'date-fn
 import { vi } from 'date-fns/locale';
 import * as _ from 'lodash-es';
 import { BehaviorSubject, Observable, combineLatest, iif, of } from 'rxjs';
-import { shareReplay, debounceTime, map, distinctUntilChanged } from 'rxjs/operators';
+import { shareReplay, debounceTime, map, distinctUntilChanged, delay } from 'rxjs/operators';
 import { ColorPicker } from 'src/app/models/color-picker';
 import { ChartDataView, ForecastModelData, QuantileType, ForecastByHorizonDisplayMode, ForecastByDateDisplayMode, ForecastDisplayMode, DisplaySettings, YScale, YValue, UserDefaultValue, ForecastData } from 'src/app/models/forecast-data';
 import { ForecastTarget } from 'src/app/models/forecast-target';
@@ -333,7 +333,7 @@ export class ForecastRebuildComponent implements OnInit {
     }));
 
     const dataViewPipeline = new DataViewPipeline(dataPipeline.truthDataSet$, dataPipeline.forecastDataSet$, displaySettings$);
-    this.dataView$ = dataViewPipeline.dataView$;
+    this.dataView$ = dataViewPipeline.dataView$.pipe(delay(1000000));
     this.allModelNames$ = dataViewPipeline.allModelNames$;
 
     const defaultVisibleModels$ = combineLatest([route.queryParamMap.pipe(distinctUntilChanged((prev, curr) => !curr.has(UrlParamNames.VisibleModels))), this.defaultSettingService.defaultModelNames$, dataViewPipeline.allModelNames$])
