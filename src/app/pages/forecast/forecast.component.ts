@@ -1,10 +1,10 @@
 import { CdkScrollable } from '@angular/cdk/scrolling';
 import { Component, Injector, OnInit, ViewChild } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, UrlSerializer } from '@angular/router';
 import { differenceInDays, formatISO, isEqual, isValid, parseISO } from 'date-fns';
 import { vi } from 'date-fns/locale';
 import * as _ from 'lodash-es';
-import { BehaviorSubject, Observable, combineLatest, iif, of } from 'rxjs';
+import { BehaviorSubject, Observable, combineLatest, iif, of, Subscription } from 'rxjs';
 import { shareReplay, debounceTime, map, distinctUntilChanged, delay } from 'rxjs/operators';
 import { ColorPicker } from 'src/app/models/color-picker';
 import { ChartDataView, ForecastModelData, QuantileType, ForecastByHorizonDisplayMode, ForecastByDateDisplayMode, ForecastDisplayMode, DisplaySettings, YScale, YValue, UserDefaultValue, ForecastData } from 'src/app/models/forecast-data';
@@ -153,11 +153,14 @@ export class ForecastRebuildComponent implements OnInit {
   horizonDisplayModeWeeksAheadValue: UserDefaultValue<1 | 2 | 3 | 4>;
   forecastDateValue: UserDefaultValue<Date>;
   visibleModelsValue: UserDefaultValue<string[]>;
+  private iframeSyncSub?: Subscription;;
 
-  constructor(private router: Router, private route: ActivatedRoute, private forecastService: ForecastDataSerivce, public locationService: LocationLookupService, private truthDataService: TruthDataService, private defaultSettingService: DefaultSettingsService) {
+  constructor(private serializer: UrlSerializer, private router: Router, private route: ActivatedRoute, private forecastService: ForecastDataSerivce, public locationService: LocationLookupService, private truthDataService: TruthDataService, private defaultSettingService: DefaultSettingsService) {
     this.ensembleModelNames$ = this.defaultSettingService.ensembleModelNames$;
     this.locationsOrderedById$ = this.locationService.locations$.pipe(map(x => _.orderBy(x.items, 'id')));
     this.locations$ = this.locationService.locations$.pipe(map(x => x.items));
+
+    this.iframeSyncSub = this.setupIFrameSync();
 
     const defaultLocation$ =
       combineLatest([locationService.locations$, route.queryParamMap.pipe(distinctUntilChanged((prev, curr) => !curr.has(UrlParamNames.Location)))])
@@ -365,6 +368,26 @@ export class ForecastRebuildComponent implements OnInit {
     // console.log("SNAP", this.route.snapshot);
   }
 
+  private setupIFrameSync() {
+    if (window.location !== window.parent.location) {
+      
+      // we are inside iframe
+      return this.route.queryParams.subscribe(x => {
+        const tree = this.router.createUrlTree([], { queryParams: x });
+        const url = this.serializer.serialize(tree);
+        if (_.includes(url, '?')) {
+          const qp = url.split('?')[1];
+          // window.parent.location.search = qp;
+          console.log("window parent origin", '*');
+          window.parent.postMessage({ $type: 'queryParams', value: qp }, '*');
+          console.log("SYNCED", qp);
+        }
+      });
+    }
+
+    return undefined;
+  }
+
   changeTarget(target: ForecastTarget) {
     this.targetValue.changeValue(target);
   }
@@ -452,6 +475,8 @@ export class ForecastRebuildComponent implements OnInit {
       queryParamsHandling: 'merge',
       replaceUrl: true
     });
+
+
   }
 
   @ViewChild(CdkScrollable) scroller?: CdkScrollable;
