@@ -10,34 +10,6 @@
   <link rel="preconnect" href="https://fonts.gstatic.com">
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons|Material+Icons+Outlined" rel="stylesheet">
-  <script>
-    window.iFrameResizer = {
-      heightCalculationMethod: function () {
-        console.log("CALC HEIGHT");
-        var elem = document.querySelector('*[iframe-height-alt]');
-        if (!elem) {
-          elem = document.querySelector('*[iframe-height]');
-        }
-
-        if (elem) {
-          console.log("ELEM", elem, elem.scrollHeight, elem.clientHeight);
-
-          let height = 0;
-
-          for (var i = 0; i < elem.children.length; i++) {
-            var child = elem.children[i];
-            // Do stuff
-            console.log("CHILD", child, child.clientHeight);
-            height += child.clientHeight;
-          }
-
-          console.log("child height", height);
-          return height + 1;
-        }
-        return 800;
-      }
-    }
-  </script>
 </head>
 
 <body class="mat-typography">

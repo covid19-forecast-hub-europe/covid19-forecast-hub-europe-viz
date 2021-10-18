@@ -39,6 +39,7 @@ export class ForecastLayoutComponent implements OnInit, AfterViewInit, OnDestroy
   legendPortal$: BehaviorSubject<TemplatePortal | null> = new BehaviorSubject<TemplatePortal | null>(null);
   quickAccessPortal$: BehaviorSubject<TemplatePortal | null> = new BehaviorSubject<TemplatePortal | null>(null);
   headerPortal$: BehaviorSubject<TemplatePortal | null> = new BehaviorSubject<TemplatePortal | null>(null);
+  yAxisPortal$: BehaviorSubject<TemplatePortal | null> = new BehaviorSubject<TemplatePortal | null>(null);
 
   constructor(private breakpointObserver: BreakpointObserver) {
     this.isDesktopWidth$ = this.breakpointObserver.observe('(min-width: 1400px)')
@@ -96,7 +97,8 @@ export class ForecastLayoutComponent implements OnInit, AfterViewInit, OnDestroy
       ['chart', this.chartPortal$],
       ['legend', this.legendPortal$],
       ['quickAccess', this.quickAccessPortal$],
-      ['header', this.headerPortal$]
+      ['header', this.headerPortal$],
+      ['yAxis', this.yAxisPortal$]
     ]);
 
     this.itemsSub = items$.subscribe(x => {
@@ -105,7 +107,7 @@ export class ForecastLayoutComponent implements OnInit, AfterViewInit, OnDestroy
           portalsByPosition.get(p.position)!.next(p.content);
         }
       });
-      this.forceResize();
+      // this.forceResize();
     });
   }
 
@@ -118,7 +120,7 @@ export class ForecastLayoutComponent implements OnInit, AfterViewInit, OnDestroy
   }
 
   forceResize() {
-    window.dispatchEvent(new Event('resize'));
+    // window.dispatchEvent(new Event('resize'));
   }
 
 }

@@ -53,7 +53,7 @@ export class LocationMapComponent implements OnInit, OnChanges {
           // locationValues.
           const itemsNotInGeoJson = locationLu.items.filter(x => !euGeoJson.features.some(f => this.getLookupIdByFeature(f) === x.id));
           if (itemsNotInGeoJson.length > 0) {
-            console.warn("No feauters in geojson for", itemsNotInGeoJson);
+            console.warn("No features in geojson for", itemsNotInGeoJson);
           }
         }
 

@@ -43,6 +43,7 @@ import { TargetLabelPipe } from './pipes/target-label.pipe';
 import { ForecastLayoutComponent } from './components/forecast-layout/forecast-layout.component';
 import { ForecastLayoutItemComponent } from './components/forecast-layout-item/forecast-layout-item.component';
 import { ForecastRebuildComponent } from './pages/forecast/forecast.component';
+import { APP_BASE_HREF, PlatformLocation } from '@angular/common';
 
 @NgModule({
   declarations: [
@@ -99,6 +100,11 @@ import { ForecastRebuildComponent } from './pages/forecast/forecast.component';
   providers: [
     // { provide: ForecastDataSerivce, useClass: ForecastCsvDataService },
     { provide: ForecastDataSerivce, useClass: ForecastJsonDataService },
+    {
+      provide: APP_BASE_HREF,
+      useFactory: (s: PlatformLocation) => s.getBaseHrefFromDOM(),
+      deps: [PlatformLocation]
+    }
   ],
   bootstrap: [AppComponent]
 })

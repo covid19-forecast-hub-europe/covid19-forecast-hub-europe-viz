@@ -8,6 +8,12 @@
 .loading-text {
   font-size: 2rem;
   color: #333;
+  max-width: 50%;
+  word-break: break-word;
+  line-height: 2rem;
+  text-align: center;
+  flex: 1;
+  font-weight: 500;
 }
 
 .loading-overlay-container {
@@ -17,10 +23,11 @@
   right: 0;
   bottom: 0;
   z-index: 9999;
-
-  background-color: #eee;
-  background: linear-gradient(#ccc, #eee);
+  overflow: hidden;
 }
+
+$ring-size: 250px;
+$logo-size: $ring-size + ($ring-size/2);
 
 .loading-container {
   display: flex;
@@ -30,9 +37,33 @@
   width: 100%;
   height: 100%;
 
-  .space-y {
+  &:before {
+    position: absolute;
+    left: 1%;
+    top: 20%;
+    right: 0;
+    bottom: 0;
+    content: " ";
+    background-image: url(https://covid19forecasthub.eu/images/logo.png);
+    background-size: $logo-size;
+    background-repeat: no-repeat;
+    // opacity: 0.85;
+    background-position: top;
+  }
+
+  .space-y-33 {
     flex: 0 0 33%;
     height: 33%;
+  }
+
+  .space-y-25 {
+    flex: 0 0 25%;
+    height: 25%;
+  }
+
+  .space-y-10 {
+    flex: 0 0 10%;
+    height: 10%;
   }
 
   // .space-x{
@@ -41,17 +72,26 @@
 
   .loading-animation {
     position: relative;
-    flex: 1 1 100%;
+    flex: 1;
     width: 50%;
 
-    $ring-size: 200px;
     min-width: $ring-size;
     min-height: $ring-size;
 
-    // width: 100%;
-    // height: 100%;
+    margin-bottom: $ring-size/3;
 
-    // background-color: orange;
+
+    .ring1 {
+      svg {
+        fill: #003a804d !important;
+      }
+    }
+
+    .ring2 {
+      svg {
+        fill: #003a804d !important;
+      }
+    }
 
     .loading__ring {
       position: absolute;

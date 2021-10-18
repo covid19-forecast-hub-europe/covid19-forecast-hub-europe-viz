@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  base_href: '',
+  // base_href: '',
   urls: {
     defaultSettings: {
       modelNames: 'https://covid19-forecasthub-cdn.azureedge.net/data/settings_model_selection.json'

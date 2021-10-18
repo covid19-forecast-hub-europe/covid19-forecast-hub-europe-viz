@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { ECharts, EChartsOption, SeriesOption, TooltipComponentOption } from 'echarts';
-import { ChartDataView, ForecastByDateDisplayMode, ForecastByHorizonDisplayMode, ForecastData, ForecastDataFilter, ForecastDisplayMode, ForecastDisplaySettings, ForecastModelData, ForecastType, QuantilePointType, QuantileType } from 'src/app/models/forecast-data';
+import { ChartDataView, ForecastByDateDisplayMode, ForecastByHorizonDisplayMode, ForecastData, ForecastModelData, ForecastType, QuantilePointType, QuantileType } from 'src/app/models/forecast-data';
 import { TruthData } from 'src/app/models/truth-data';
 import * as _ from 'lodash-es';
 import { addDays, addMinutes } from 'date-fns';
@@ -37,11 +37,11 @@ export class ForecastChartComponent implements OnInit, OnChanges {
       type: 'time' as 'time',
     },
     yAxis: {
-      type: 'value' as 'value',
+      type: 'linear' as any,
       name: '',
       nameLocation: 'middle' as 'middle',
       nameGap: 50,
-      min: 0,
+      min: 0 as any,
       scale: true,
     },
     tooltip: {
@@ -119,6 +119,8 @@ export class ForecastChartComponent implements OnInit, OnChanges {
   }
 
   private updateChartOption() {
+    // console.log("Updating chart with", this.dataView);
+    
     const newSeries: SeriesOption[] = [];
     const newChartOption = { ...this.defaultChartOption, series: newSeries };
 
@@ -128,12 +130,17 @@ export class ForecastChartComponent implements OnInit, OnChanges {
     }
 
     if (this.dataView) {
+      newChartOption.yAxis.type = this.dataView.displaySettings.yScale === 'log' ? 'log' : 'value';
+      newChartOption.yAxis.min = newChartOption.yAxis.type === 'log'
+        ? ({ min }: { min: number, max: number }): any => min <= 0 ? 0.01 : undefined
+        : 0;
+      // newChartOption.yAxis.scale = newChartOption.yAxis.type === 'value';
       newChartOption.yAxis.name = this.targetLabelPipe.transform(this.dataView.filter.target);
 
       if (this.dataView.truthData) {
         const reducedTruth = _.reduce(this.dataView.truthData, (prev, curr) => {
           prev.maxDate = !prev.maxDate ? curr.date : (curr.date > prev.maxDate ? curr.date : prev.maxDate);
-          prev.data.push([curr.date, curr.value]);
+          prev.data.push([curr.date, this.transfromYAxisValue(curr.value)]);
           return prev;
         }, { maxDate: undefined as undefined | Date, data: [] as any[] })
 
@@ -182,7 +189,7 @@ export class ForecastChartComponent implements OnInit, OnChanges {
           if (!prev.has(timezeroStr)) {
             prev.set(timezeroStr, { line: [], area: new Map() })
           }
-          prev.get(timezeroStr)!.line.push({ value: [curr.target.end_date, curr.value] });
+          prev.get(timezeroStr)!.line.push({ value: [curr.target.end_date, this.transfromYAxisValue(curr.value)] });
         } else if (curr.type === ForecastType.Quantile && curr.target.time_ahead === displayMode.weeksAhead && curr.quantile && curr.quantile.type === ci) {
           if (!prev.has(timezeroStr)) {
             prev.set(timezeroStr, { line: [], area: new Map() })
@@ -195,10 +202,10 @@ export class ForecastChartComponent implements OnInit, OnChanges {
           const mapEntry = prev.get(timezeroStr)!.area.get(curr.target.end_date.toISOString())!;
           if (curr.quantile.point === QuantilePointType.Lower) {
             mapEntry[0].xAxis = addDays(curr.target.end_date, -3);
-            mapEntry[0].yAxis = curr.value;
+            mapEntry[0].yAxis = this.transfromYAxisValue(curr.value);
           } else if (curr.quantile.point === QuantilePointType.Upper) {
             mapEntry[1].xAxis = addDays(curr.target.end_date, 3);
-            mapEntry[1].yAxis = curr.value;
+            mapEntry[1].yAxis = this.transfromYAxisValue(curr.value);
           }
         }
         return prev;
@@ -296,7 +303,7 @@ export class ForecastChartComponent implements OnInit, OnChanges {
 
   private createForecastHorizonTooltipFormatter(): any {
     return (params: any | Array<any>) => {
-      console.log("TT for", params);
+      // console.log("TT for", params);
       const paramsArray = Array.isArray(params) ? params : [params];
       if (paramsArray.every(x => x.seriesId.endsWith('-ci'))) return '';
 
@@ -307,15 +314,15 @@ export class ForecastChartComponent implements OnInit, OnChanges {
 
         switch (curr.seriesName) {
           case 'truth-data':
-            prev.truthLine = `${curr.marker}&nbsp;${this.targetLabelPipe.transform(this.dataView!.filter.target)}:&nbsp;${NumberHelper.formatInt(curr.value[1])}`;
+            prev.truthLine = `${curr.marker}&nbsp;${this.targetLabelPipe.transform(this.dataView!.filter.target)}:&nbsp;${NumberHelper.format(curr.value[1])}`;
             break;
           default:
             const value = curr.value[1];
             const ci = curr.value[2];
 
-            let line = `${curr.marker}&nbsp;${curr.seriesName}:&nbsp;${NumberHelper.formatInt(value)}`;
+            let line = `${curr.marker}&nbsp;${curr.seriesName}:&nbsp;${NumberHelper.format(value)}`;
             if (ci) {
-              line += `&nbsp;(${NumberHelper.formatInt(ci[0].yAxis)}&nbsp;-&nbsp;${NumberHelper.formatInt(ci[1].yAxis)})`
+              line += `&nbsp;(${NumberHelper.formatInt(ci[0].yAxis)}&nbsp;-&nbsp;${NumberHelper.format(ci[1].yAxis)})`
             }
             prev.fc_lines.push({ line, value });
 
@@ -331,7 +338,7 @@ export class ForecastChartComponent implements OnInit, OnChanges {
       }
 
       const result = lines.concat(_.orderBy(content.fc_lines, 'value', 'desc').map(x => x.line)).join('<br/>');
-      console.log("TT RESULT:", result);
+      // console.log("TT RESULT:", result);
       return result;
     }
   }
@@ -376,24 +383,24 @@ export class ForecastChartComponent implements OnInit, OnChanges {
 
         const seriesData = _.reduce(modelData.data, (prev, curr) => {
           if (curr.type === ForecastType.Point || curr.type === ForecastType.Observed) {
-            prev.line.push({ value: [curr.target.end_date, curr.value] });
+            prev.line.push({ value: [curr.target.end_date, this.transfromYAxisValue(curr.value)] });
 
             if (curr.target.time_ahead === 0) {
-              prev.lower.push({ value: [curr.target.end_date, curr.value] });
+              prev.lower.push({ value: [curr.target.end_date, this.transfromYAxisValue(curr.value)] });
               prev.upper.push({ value: [curr.target.end_date, 0] });
             }
           }
 
           if (curr.type === ForecastType.Quantile && curr.quantile && curr.quantile.type === ci) {
             if (curr.quantile.point === QuantilePointType.Lower) {
-              prev.lower.push({ value: [curr.target.end_date, curr.value] });
+              prev.lower.push({ value: [curr.target.end_date, this.transfromYAxisValue(curr.value)] });
             }
             else if (curr.quantile.point === QuantilePointType.Upper) {
               const lowerPoint = _.find(modelData.data, x => {
                 return x.type === ForecastType.Quantile && x.quantile && x.quantile.type === ci && x.quantile.point === QuantilePointType.Lower && x.target.time_ahead === curr.target.time_ahead
               }) as ForecastData;
-              const lowerValue = lowerPoint && lowerPoint.value || 0;
-              prev.upper.push({ value: [curr.target.end_date, curr.value - lowerValue] });
+              const lowerValue = lowerPoint && this.transfromYAxisValue(lowerPoint.value) || 0;
+              prev.upper.push({ value: [curr.target.end_date, this.transfromYAxisValue(curr.value) - lowerValue] });
             }
           }
           return prev;
@@ -454,7 +461,7 @@ export class ForecastChartComponent implements OnInit, OnChanges {
 
         switch (curr.seriesName) {
           case 'truth-data':
-            prev.truth = `${curr.marker}&nbsp;${this.targetLabelPipe.transform(this.dataView!.filter.target)}:&nbsp;${NumberHelper.formatInt(curr.value[1])}`;
+            prev.truth = `${curr.marker}&nbsp;${this.targetLabelPipe.transform(this.dataView!.filter.target)}:&nbsp;${NumberHelper.format(curr.value[1])}`;
             break;
           default:
             if (!prev.models.has(curr.seriesName)) {
@@ -482,12 +489,19 @@ export class ForecastChartComponent implements OnInit, OnChanges {
 
       const modelLines = _.orderBy([...content.models.entries()], ([key, x]) => x.value, 'desc').map(([key, x]) => {
         const upper = x.lower + x.upper;
-        const ci = x.lower !== upper ? `&nbsp;(${NumberHelper.formatInt(x.lower)}&nbsp;-&nbsp;${NumberHelper.formatInt(upper)})` : '';
-        return `${x.marker}&nbsp;${key}:&nbsp;${NumberHelper.formatInt(x.value)}${ci}`
+        const ci = x.lower !== upper ? `&nbsp;(${NumberHelper.format(x.lower)}&nbsp;-&nbsp;${NumberHelper.format(upper)})` : '';
+        return `${x.marker}&nbsp;${key}:&nbsp;${NumberHelper.format(x.value)}${ci}`
       });
 
       return [content.header, content.truth].filter(x => !!x).concat(modelLines).join('<br/>');
     }
+  }
+
+  private transfromYAxisValue(value: number): number {
+    if (this.dataView?.displaySettings.yValue === 'incidence') {
+      return (value / (this.dataView?.filter.location.population || Infinity)) * 100000
+    }
+    return value;
   }
 
   private getDataFilterId() {

@@ -34,7 +34,10 @@
               "src/styles.scss",
               "src/theme.scss"
             ],
-            "scripts": []
+            "scripts": [],
+            "allowedCommonJsDependencies": [
+              "papaparse"
+            ]
           },
           "configurations": {
             "production": {
@@ -44,7 +47,9 @@
                   "with": "src/environments/environment.prod.ts"
                 }
               ],
-              "optimization": true,
+              "optimization": {
+                "fonts": false
+              },
               "outputHashing": "all",
               "sourceMap": false,
               "namedChunks": false,
