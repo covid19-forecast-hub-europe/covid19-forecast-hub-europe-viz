@@ -7,7 +7,7 @@ export const environment = {
   // base_href: '',
   urls: {
     defaultSettings: {
-      modelNames: 'https://covid19-forecasthub-cdn.azureedge.net/data/settings_model_selection.json'
+      modelNames: 'https://raw.githubusercontent.com/epiforecasts/covid19-forecast-hub-europe/main/viz/settings_model_selection.json'
     },
     lookups: {
       location: 'https://raw.githubusercontent.com/epiforecasts/covid19-forecast-hub-europe/main/data-locations/locations_eu.csv'
