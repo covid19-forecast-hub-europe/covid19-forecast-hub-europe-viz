@@ -14,10 +14,10 @@ export const environment = {
     },
     forecastData: {
       csv: 'https://raw.githubusercontent.com/jbracher/covid19-forecast-hub-europe/main/viz/forecasts_to_plot.csv',
-      json: 'https://raw.githubusercontent.com/epiforecasts/covid19-forecast-hub-europe/main/viz/forecasts_to_plot.json'
+      json: 'https://covid19-forecasthub-cdn.azureedge.net/data/forecasts_to_plot.json'
     },
-    truthData: 'https://raw.githubusercontent.com/epiforecasts/covid19-forecast-hub-europe/main/viz/truth_to_plot.csv',
-    metadata: 'https://raw.githubusercontent.com/epiforecasts/covid19-forecast-hub-europe/main/viz/metadata.json'
+    truthData: 'https://covid19-forecasthub-cdn.azureedge.net/data/truth_to_plot.csv',
+    metadata: 'https://covid19-forecasthub-cdn.azureedge.net/data/metadata.json'
   }
 };
 
