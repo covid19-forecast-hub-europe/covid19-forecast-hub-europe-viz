@@ -15,7 +15,6 @@ import { EchartsZrClickDirective } from './directives/echarts-zr-click.directive
 import { HoverClassDirective } from './directives/hover-class.directive';
 import { LoadingSpinnerComponent } from './components/loading-spinner/loading-spinner.component';
 import { ForecastDataSerivce } from './services/forecast-data.service';
-import { ForecastCsvDataService } from './services/forecast-csv-data.service';
 import { ForecastJsonDataService } from './services/forecast-json-data.service';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { LayoutModule } from '@angular/cdk/layout';
