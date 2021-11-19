@@ -39,7 +39,6 @@ export interface ForecastData {
 
 export interface ForecastTargetDescription {
   time_ahead: number;
-  target_type: ForecastTarget;
   end_date: Date;
 }
 
@@ -135,7 +134,7 @@ export type YValue = 'count' | 'incidence';
 //   // confidenceInterval$ = createUserDefaultUrlPipe(this.userConfidenceInterval$.asObservable(), this.defaults.ci$, UrlParamNames.PredictionInterval, this.updateUrlQueryParams)
 
 //   confidenceInterval$ = combineLatest([this.userConfidenceInterval$.asObservable().pipe(tap(x => {
-//     // updateUrlQueryParams({ [urlName]: x });  
+//     // updateUrlQueryParams({ [urlName]: x });
 //     const urlParam = x === DefaultValues.PredictionInterval
 //       ? undefined
 //       : mapQuantileTypeToUrl(x);

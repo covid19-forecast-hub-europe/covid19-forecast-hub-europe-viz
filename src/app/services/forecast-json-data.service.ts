@@ -17,7 +17,6 @@ interface RawForecastToPlotDataItem {
   target: {
     end_date: string,
     time_ahead: number,
-    type: 'cases' | 'death' | 'hosp'
   },
   timezero: string,
   type: 'observed' | 'point' | 'quantile',
@@ -79,7 +78,6 @@ export class ForecastJsonDataService extends ForecastDataSerivce {
       model: item.model,
       target: {
         end_date: new Date(item.target.end_date),
-        target_type: this.parseTargetType(item.target.type),
         time_ahead: item.target.time_ahead
       },
       timezero: new Date(item.timezero),
@@ -97,18 +95,6 @@ export class ForecastJsonDataService extends ForecastDataSerivce {
         return ForecastType.Observed;
       default:
         throw new Error(`Unknown forecast type '${type}' (expected: 'quantile' | 'point' | 'observed').`);
-    }
-  }
-  private parseTargetType(type: string): ForecastTarget {
-    switch (type) {
-      case 'cases':
-        return ForecastTarget.Cases;
-      case 'death':
-        return ForecastTarget.Death;
-      case 'hosp':
-        return ForecastTarget.Hospitalisation;
-      default:
-        throw new Error(`Unknown target type '${type}' (expected: 'cases' | 'death' | 'hosp').`);
     }
   }
   private parseQuantile(q: number): { type: QuantileType, point: QuantilePointType } {
