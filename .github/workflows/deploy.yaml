@@ -1,7 +1,7 @@
 name: "Deploy"
 
 on:
-  dispatch_workflow:
+  workflow_dispatch:
   push:
     branches: [main, master]
 
