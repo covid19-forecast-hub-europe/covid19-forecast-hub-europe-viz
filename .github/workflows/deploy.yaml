@@ -8,7 +8,7 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    if: github.repository == 'epiforecasts/covid19-forecast-hub-europe-viz'
+    if: github.repository == 'covid19-forecast-hub-europe/covid19-forecast-hub-europe-viz'
 
     steps:
       - name: Checkout repository
