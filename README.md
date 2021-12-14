@@ -24,7 +24,9 @@ Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protrac
 
 ## Deploy
 
-Run `npm run deploy` to automatically build the app and push the output to the `gh-pages` branch.
+The app is auto-deployed on push via [GitHub Actions](https://github.com/epiforecasts/covid19-forecast-hub-europe-viz/blob/master/.github/workflows/deploy.yaml).
+
+However, if you want to deploy locally, you can run `npm run deploy` to automatically build the app and push the output to the `gh-pages` branch.
 
 ## Further help
 
