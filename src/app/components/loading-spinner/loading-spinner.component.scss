@@ -27,7 +27,7 @@
 }
 
 $ring-size: 250px;
-$logo-size: $ring-size + ($ring-size/2);
+$logo-size: $ring-size + calc($ring-size/2);
 
 .loading-container {
   display: flex;
@@ -78,7 +78,7 @@ $logo-size: $ring-size + ($ring-size/2);
     min-width: $ring-size;
     min-height: $ring-size;
 
-    margin-bottom: $ring-size/3;
+    margin-bottom: calc($ring-size/3);
 
 
     .ring1 {
@@ -97,8 +97,8 @@ $logo-size: $ring-size + ($ring-size/2);
       position: absolute;
       width: $ring-size;
       height: $ring-size;
-      left: calc(50% - #{$ring-size / 2});
-      top: calc(50% - #{$ring-size / 2});
+      left: calc(50% - #{calc($ring-size / 2)});
+      top: calc(50% - #{calc($ring-size / 2)});
 
       &:first-child {
         transform: skew(30deg, 20deg);

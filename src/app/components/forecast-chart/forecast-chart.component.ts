@@ -7,7 +7,6 @@ import { addDays, addMinutes } from 'date-fns';
 import { DateHelper } from 'src/app/util/date-helper';
 import { TitleCasePipe } from '@angular/common';
 import { NumberHelper } from 'src/app/util/number-helper';
-import { stringify } from '@angular/compiler/src/util';
 import { ForecastTarget } from 'src/app/models/forecast-target';
 import { LocationLookupItem } from 'src/app/models/location-lookup';
 import { DateToPrevSaturdayPipe } from 'src/app/pipes/date-to-prev-saturday.pipe';
